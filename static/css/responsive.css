@@ -1,0 +1,17 @@
+@media(max-width:960px){
+  .page-home .hero{grid-template-columns:1fr;min-height:0}.hero-art{max-width:420px;margin:0 auto}
+  .split,.tools,.steps,.footer-grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr 1fr}
+  .dash{grid-template-columns:1fr}.side{position:static;flex-direction:row;overflow-x:auto}.side a{white-space:nowrap}
+  .stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .menu-btn{display:grid}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:.5rem 1.2rem}
+  .nav-links.open{display:flex}.nav-links a{padding:.8rem 0}
+  .nav-actions .btn{display:none}
+  .feature-grid,.grid2,.result dl{grid-template-columns:1fr}
+  .card{padding:1.3rem}.section{padding:3.5rem 1.2rem}
+}
+
+@media(max-width:720px){.nav-links .menu-cta{display:block;margin:.6rem 0 .8rem;text-align:center;color:var(--bg)}.nav-links a.menu-cta:hover{color:var(--bg)}}
+@media(max-width:1020px) and (min-width:721px){.nav-links{gap:1.1rem}.nav-links a{font-size:.9rem}}

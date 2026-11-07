@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - PerformPredict{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block content %}
+<div class="dash">
+  <aside class="side" aria-label="Dashboard sections">
+    <a href="#overview" class="on">Overview</a>
+    <a href="#school">School Prediction</a>
+    <a href="#college">College Prediction</a>
+    <a href="#performance">Model Performance</a>
+    <a href="#importance">Feature Importance</a>
+    <a href="#models">About Models</a>
+  </aside>
+  <div class="dash-main">
+    <section id="overview">
+      <h1>Dashboard</h1>
+      <div class="stats">
+        <div class="stat"><span>School test R²</span><b>{{ d.school_metrics.test_r2 }}</b></div>
+        <div class="stat"><span>School test MAE</span><b>{{ d.school_metrics.test_mae }} pts</b></div>
+        <div class="stat"><span>College CV accuracy</span><b>{{ d.college_metrics.cv_acc }}%</b></div>
+        <div class="stat"><span>College records</span><b>{{ d.college_metrics.records }}</b></div>
+      </div>
+    </section>
+
+    <section class="two">
+      <article class="card" id="school">
+        <h2>School Prediction</h2>
+        <p>Estimates a mathematics score from 7 inputs. Cross-validation R² is {{ d.school_metrics.cv_r2 }}.</p>
+        <a class="btn btn-accent" href="{{ url_for('school') }}">Open school predictor</a>
+      </article>
+      <article class="card" id="college">
+        <h2>College Prediction</h2>
+        <p>Predicts one of 8 grade categories from 31 inputs. Accuracy is limited by the small dataset.</p>
+        <a class="btn btn-accent" href="{{ url_for('college') }}">Open college predictor</a>
+      </article>
+    </section>
+
+    <section id="performance">
+      <h2>Model Performance</h2>
+      <div class="two">
+        <article class="card"><h3>School: R² score</h3><div class="chart"><canvas id="schoolPerf"></canvas></div>
+          <p class="muted small">Test MAE is {{ d.school_metrics.test_mae }} points on the mathematics score.</p></article>
+        <article class="card"><h3>College: accuracy</h3><div class="chart"><canvas id="collegePerf"></canvas></div>
+          <p class="muted small">Random guessing among 8 grades would be right 12.5% of the time. The model is only modestly better.</p></article>
+      </div>
+    </section>
+
+    <section id="importance">
+      <h2>Feature Importance</h2>
+      <div class="two">
+        <article class="card"><h3>School: largest coefficients</h3><div class="chart tall"><canvas id="schoolImp"></canvas></div>
+          <p class="muted small">Taken from the saved linear model. Values are points of math score; each category pair mirrors the other.</p></article>
+        <article class="card"><h3>College: top 10 features</h3><div class="chart tall"><canvas id="collegeImp"></canvas></div>
+          <p class="muted small">Random Forest importance, summed across each question's answer options.</p></article>
+      </div>
+    </section>
+
+    <section id="models">
+      <h2>About Models</h2>
+      <div class="two">
+        <article class="card"><h3>School model</h3>
+          <p>A scikit-learn pipeline (one-hot encoding, then <b>{{ d.school_algo }}</b>) that predicts the mathematics score. Metrics shown are the values reported from training.</p></article>
+        <article class="card"><h3>College model</h3>
+          <p>A scikit-learn pipeline (one-hot encoding, then <b>{{ d.college_algo }}</b>) that predicts a grade from the UCI Higher Education Students Performance Evaluation dataset. With 145 records, it is a demonstration, not a dependable grader.</p></article>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>window.DASH = {{ d|tojson }};</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

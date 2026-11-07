@@ -1,0 +1,7 @@
+# Use the SAME scikit-learn version you trained the models with
+# (run `pip show scikit-learn` in your notebook environment and pin it here).
+Flask
+joblib
+numpy
+pandas
+scikit-learn

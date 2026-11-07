@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}College prediction - PerformPredict{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/prediction.css') }}">{% endblock %}
+{% block content %}
+{% set groups = [("Student background", fields[0:10]), ("Family", fields[10:16]), ("Study habits and classes", fields[16:28]), ("Academic record", fields[28:])] %}
+<section class="pred-wrap">
+  <div class="pred-head">
+    <p class="kicker">College model</p>
+    <h1>Predict a grade category</h1>
+    <p class="muted">Answer all 31 questions from the UCI Higher Education Students Performance Evaluation survey.</p>
+    <p class="notice">This model was trained on 145 records and reached about 35.86% cross-validated accuracy. Treat the result as a rough indication only.</p>
+  </div>
+  <div class="card" id="formCard">
+    <form id="predForm" data-endpoint="{{ url_for('predict_college') }}" data-type="college" novalidate>
+      {% for title, items in groups %}
+      <fieldset><legend>{{ title }}</legend>
+        <div class="grid2">
+          {% for f in items %}
+          <label class="field"><span>{{ f.label }}</span>
+            <select name="{{ f.name }}" required>
+              <option value="">Select...</option>
+              {% for o in f.options %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+            </select><small class="err"></small>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+      <p class="form-error" id="formError" role="alert"></p>
+      <button class="btn btn-accent" type="submit">Predict grade</button>
+    </form>
+  </div>
+  <div class="card result" id="resultCard" hidden></div>
+</section>
+<div class="loader" id="loader" hidden><span></span><p>Running the model...</p></div>
+{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>{% endblock %}

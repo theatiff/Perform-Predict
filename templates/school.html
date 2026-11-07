@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}School prediction - PerformPredict{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/prediction.css') }}">{% endblock %}
+{% block content %}
+<section class="pred-wrap">
+  <div class="pred-head">
+    <p class="kicker">School model</p>
+    <h1>Predict a mathematics score</h1>
+    <p class="muted">Enter the student's details. Reading and writing scores are out of 100.</p>
+  </div>
+  <div class="card" id="formCard">
+    <form id="predForm" data-endpoint="{{ url_for('predict_school') }}" data-type="school" novalidate>
+      <div class="grid2">
+        {% for col, opts in choices.items() %}
+        <label class="field"><span>{{ col|capitalize }}</span>
+          <select name="{{ col }}" required>
+            <option value="">Select...</option>
+            {% for o in opts %}<option value="{{ o }}">{{ o|capitalize if col=='gender' else o }}</option>{% endfor %}
+          </select><small class="err"></small>
+        </label>
+        {% endfor %}
+        <label class="field"><span>Reading score</span>
+          <input type="number" name="reading score" min="0" max="100" step="1" required placeholder="0 - 100"><small class="err"></small></label>
+        <label class="field"><span>Writing score</span>
+          <input type="number" name="writing score" min="0" max="100" step="1" required placeholder="0 - 100"><small class="err"></small></label>
+      </div>
+      <p class="form-error" id="formError" role="alert"></p>
+      <button class="btn btn-accent" type="submit">Predict score</button>
+    </form>
+  </div>
+  <div class="card result" id="resultCard" hidden></div>
+</section>
+<div class="loader" id="loader" hidden><span></span><p>Running the model...</p></div>
+{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>{% endblock %}
