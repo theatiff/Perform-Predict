@@ -1,5 +1,6 @@
-# Use the SAME scikit-learn version you trained the models with
-# (run `pip show scikit-learn` in your notebook environment and pin it here).
+#  I Use the SAME scikit-learn version That trained the models with
+#  (run `pip show scikit-learn` in my  notebook environment and pin it here).
+
 Flask
 joblib
 numpy
